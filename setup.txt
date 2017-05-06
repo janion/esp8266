@@ -1,0 +1,49 @@
+* Flash size lookup:
+python esptool.py --port COM7 flash_id
+https://code.coreboot.org/p/flashrom/source/tree/HEAD/trunk/flashchips.h
+
+* Flash new firmware:
+python esptool.py --port COM7 --baud 460800 write_flash --flash_size=32m 0 esp8266-20170108-v1.8.7.bin
+
+* Connect to repl via putty on 115200
+
+* Connect to wifi:
+>>> import network
+>>> sta_if = network.WLAN(network.STA_IF)
+>>> ap_if = network.WLAN(network.AP_IF)
+>>> sta_if.active(True)
+>>> sta_if.connect('<your ESSID>', '<your password>')
+>>> sta_if.isconnected()
+>>> ap_if.active(False)
+
+* Setup to automatically connect:
+def do_connect():
+    import network
+    sta_if = network.WLAN(network.STA_IF)
+    if not sta_if.isconnected():
+        print('connecting to network...')
+        sta_if.active(True)
+        sta_if.connect('<essid>', '<password>')
+        while not sta_if.isconnected():
+            pass
+    print('network config:', sta_if.ifconfig())
+
+* Setup webREPL:
+>>> import webrepl_setup
+
+* Start webREPL:
+>>> import webrepl
+>>> webrepl.start()
+
+* Connect to webRepl:
+ap_if.ifconfig()
+http://micropython.org/webrepl/?
+
+* Web server example:
+https://docs.micropython.org/en/latest/esp8266/esp8266/tutorial/network_tcp.html
+
+* Hijinks (Pyboard only):
+https://docs.micropython.org/en/latest/pyboard/pyboard/tutorial/usb_mouse.html
+
+* Pin mapping:
+http://www.esp8266.com/viewtopic.php?f=6&t=9815
